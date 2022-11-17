@@ -35,8 +35,6 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
     private String phone_number;
     private String amount;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

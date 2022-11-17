@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 public class UserDashboard extends AppCompatActivity {
 
-    private CardView pay, prog;
+    private CardView pay, prog, meriGo;
     private CardView select;
 
     @SuppressLint("MissingInflatedId")
@@ -20,6 +20,7 @@ public class UserDashboard extends AppCompatActivity {
         pay = findViewById(R.id.pay);
         select = findViewById(R.id.select);
         prog = findViewById(R.id.prog);
+        meriGo = findViewById(R.id.M);
         pay.setOnClickListener(View -> {
             Intent intent = new Intent(UserDashboard.this, MpesaActivity.class);
             startActivity(intent);
@@ -30,10 +31,16 @@ public class UserDashboard extends AppCompatActivity {
             startActivity(intent);
 
         });
-       select.setOnClickListener(View -> {
-            Intent intent = new Intent(UserDashboard.this,SelectWinner.class);
-            startActivity(intent);
 
+        meriGo.setOnClickListener(view -> {
+            Intent intent = new Intent(UserDashboard.this, MeriGo.class);
+            startActivity(intent);
         });
+
+       select.setOnClickListener(View -> {
+           Intent intent = new Intent(UserDashboard.this, SelectWinner.class);
+           startActivity(intent);
+       });
+
     }
 }

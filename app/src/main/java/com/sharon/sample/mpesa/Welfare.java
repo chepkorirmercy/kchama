@@ -21,7 +21,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +44,6 @@ public class Welfare extends AppCompatActivity {
         btnsub=findViewById(R.id.btnsub);
         name=findViewById(R.id.name);
         description=findViewById(R.id.desc);
-
         calendar = Calendar.getInstance();
         final  int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);

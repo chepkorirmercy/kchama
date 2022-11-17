@@ -1,4 +1,4 @@
- package com.sharon.sample.mpesa;
+package com.sharon.sample.mpesa;
 
 import android.content.Context;
 import android.view.LayoutInflater;

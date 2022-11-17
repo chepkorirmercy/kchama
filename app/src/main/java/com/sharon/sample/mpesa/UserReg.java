@@ -98,9 +98,9 @@ public class UserReg extends AppCompatActivity {
                                 userInfo.put("id",currentUserId);
                                 userInfo.put("name",fullName);
                                 userInfo.put("email",email);
-                                userInfo.put("phonenumber",phoneNumber);
+                                userInfo.put("phoneNumber",phoneNumber);
                                 userInfo.put("type","user");
-
+                                userInfo.put("awarded", false);
 
                                 userDatabaseRef.updateChildren(userInfo).addOnCompleteListener(new OnCompleteListener() {
                                     @Override

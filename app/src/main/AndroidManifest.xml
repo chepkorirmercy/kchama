@@ -22,12 +22,26 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".UserPayments"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ProjectsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+    <activity
+        android:name=".MeriGo"
+        android:exported="false">
+        <meta-data
+            android:name="android.app.lib_name"
+            android:value="" />
+    </activity>
         <activity
             android:name=".MpesaActivity"
             android:exported="false">
@@ -44,6 +58,13 @@
         </activity>
         <activity
             android:name=".SendSMS"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ProjectProject"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
