@@ -91,7 +91,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         stkPush.setPartyB(Config.PARTYB);
         stkPush.setPhoneNumber(STKPush.sanitizePhoneNumber(phone_number));
         stkPush.setCallBackURL(Config.CALLBACKURL);
-        stkPush.setAccountReference("test");
+        stkPush.setAccountReference("KChama");
         stkPush.setTransactionDesc("some description");
 
         mpesa.startStkPush(token, stkPush, new STKListener() {
