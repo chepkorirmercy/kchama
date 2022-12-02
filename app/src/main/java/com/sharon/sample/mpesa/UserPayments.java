@@ -5,9 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,22 +22,37 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 public class UserPayments extends AppCompatActivity {
     Button restartCycle;
     FirebaseDatabase database;
-    DatabaseReference usersRef, awardedUsersRef;
+    DatabaseReference usersRef, awardedUsersRef, cycleRef;
     ProgressDialog loader;
     ValueEventListener valueEventListener;
-
+    DatePicker datePicker;
+    TimePicker timePicker;
+    Button setSpinDate;
+    TimePickerDialog picker;
+    String spinDate; // next spin date and time
+    int year, month, date, hour, minute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_payments);
 
         restartCycle = findViewById(R.id.restartCycle);
+        datePicker = findViewById(R.id.datePicker);
+        timePicker = findViewById(R.id.timePicker);
+        setSpinDate = findViewById(R.id.setSpinDate);
+        timePicker.setIs24HourView(true);
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("user");
         awardedUsersRef = database.getReference("users/awarded");
+        cycleRef = database.getReference("/cycles");
         loader = new ProgressDialog(this);
 
 
@@ -77,6 +95,53 @@ public class UserPayments extends AppCompatActivity {
                 loader.setMessage("Restarting Cycle.... Please Wait...");
                 loader.show();
                 usersRef.addListenerForSingleValueEvent(valueEventListener);
+            }
+        });
+
+        /**
+         * Set next spin date
+         */
+        setSpinDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                picker = new TimePickerDialog(UserPayments.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                // set spin time
+                                hour = sHour;
+                                minute = sMinute;
+                            }
+                        }, hour, minute, true);
+
+                // date displayed time
+                picker.updateTime(hour, minute);
+
+                // set date, month and year
+                date = datePicker.getDayOfMonth();
+                month = datePicker.getMonth()+1;
+                year  = datePicker.getYear();
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, month, date, hour, minute);
+                // format date
+                spinDate = date+"/"+month+"/"+year+" "+hour+":"+minute;
+
+                Toast.makeText(UserPayments.this, "Spin Date: "+spinDate, Toast.LENGTH_LONG).show();
+
+                // set spin date in firebase
+                cycleRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        cycleRef.setValue(spinDate);
+                        Toast.makeText(UserPayments.this, "Spin date set successfully. ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // TODO handle
+                    }
+                });
             }
         });
     }
