@@ -15,6 +15,20 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
+            android:name=".VerifyPayments"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PaymentDetails"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SelectWinner"
             android:exported="false">
             <meta-data
@@ -35,13 +49,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-    <activity
-        android:name=".MeriGo"
-        android:exported="false">
-        <meta-data
-            android:name="android.app.lib_name"
-            android:value="" />
-    </activity>
+        <activity
+            android:name=".MeriGo"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".MpesaActivity"
             android:exported="false">
