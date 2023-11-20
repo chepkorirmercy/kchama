@@ -25,9 +25,9 @@ public class Dashboard extends AppCompatActivity {
             finish();
         });
         u.setOnClickListener(View->{
-//            Intent intent = new Intent(Dashboard.this, UserLogin.class);
-//            startActivity(intent);
-//            finish();
+           Intent intent = new Intent(Dashboard.this, UserLogin.class);
+           startActivity(intent);
+           finish();
         });
     }
 }
