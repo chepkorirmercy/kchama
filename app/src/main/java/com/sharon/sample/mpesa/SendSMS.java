@@ -22,13 +22,13 @@ public class SendSMS extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_sms);
         etPhone = findViewById(R.id.et_phone);
-       // Intent intent = getIntent();
-       // String phone = intent.getStringExtra("phone");
-        //etPhone.setText(String.valueOf(phone));
+        Intent intent = getIntent();
+       String phone = intent.getStringExtra("phone");
+        etPhone.setText(String.valueOf(phone));
         etMessage = findViewById(R.id.et_message);
 
         btSend = findViewById(R.id.bt_send);
-        btSend.setOnClickListener(v -> {
+       btSend.setOnClickListener(v -> {
             //checking condition
             if(ContextCompat.checkSelfPermission(SendSMS.this, Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_GRANTED) {

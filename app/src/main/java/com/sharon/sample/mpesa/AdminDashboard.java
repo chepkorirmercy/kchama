@@ -40,10 +40,10 @@ public class AdminDashboard extends AppCompatActivity {
             Intent intent = new Intent(AdminDashboard.this,ViewInfo.class);
             startActivity(intent);
         });
-        Send.setOnClickListener(View->{
-            Intent intent = new Intent(AdminDashboard.this, SendSMS.class);
-            startActivity(intent);
-        });
+//        Send.setOnClickListener(View->{
+//            Intent intent = new Intent(AdminDashboard.this, SendSMS.class);
+//            startActivity(intent);
+//        });
 
         verify.setOnClickListener(View->{
             Intent intent = new Intent(AdminDashboard.this,VerifyPayments.class);
