@@ -1,15 +1,15 @@
 package com.sharon.sample.mpesa;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sharon.mpesa.stkpush.Mode;
@@ -35,6 +35,8 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
     private String phone_number;
     private String amount;
+    private FirebaseDatabase database;
+    private DatabaseReference transactionStatusRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,10 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitleText("Connecting to Safaricom");
         sweetAlertDialog.setContentText("Please wait...");
-        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.setCancelable(true);
+        // Initialize Firebase Database
+        database = FirebaseDatabase.getInstance();
+        transactionStatusRef = database.getReference("transaction_status");
     }
 
     public void startMpesa(View view) {
@@ -96,22 +101,35 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
         mpesa.startStkPush(token, stkPush, new STKListener() {
             @Override
+
             public void onResponse(STKPushResponse stkPushResponse) {
                 Log.e(TAG, "onResponse: " + stkPushResponse.toJson(stkPushResponse));
+
+                // Dynamically obtain the M-Pesa code
+                String mpesaCode = getMpesaCode(stkPushResponse);
+
+                // Log the M-Pesa code before storing it
+                Log.d(TAG, "M-Pesa Code before storing: " + mpesaCode);
+
                 String message = "Please enter your pin to complete transaction";
+
+                // Log amount and phone_number for debugging
+                Log.d(TAG, "Amount: " + amount);
+                Log.d(TAG, "Phone Number: " + phone_number);
+
+
+                // Store the transaction status in Firebase Database
+                storeTransactionStatus("success", message, stkPushResponse,amount,phone_number);
+
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 sweetAlertDialog.setTitleText("Transaction started");
                 sweetAlertDialog.setContentText(message);
-                //change redirection
-//                Toast.makeText(AdminDashboard.this, "Login Successful", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(AdminDashboard.this, UserReg.class);
-//                startActivity(intent);
-//                finish();
             }
 
             @Override
             public void onError(Throwable throwable) {
-                Log.e(TAG, "stk onError: " + throwable.getStackTrace());
+                Log.e(TAG, "stk onError: " + throwable.getMessage());
+
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 sweetAlertDialog.setTitleText("Error");
                 sweetAlertDialog.setContentText(throwable.getMessage());
@@ -121,9 +139,61 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
     @Override
     public void OnTokenError(Throwable throwable) {
-        Log.e(TAG, "mpesa Error: " + throwable.getMessage());
+        Log.e(TAG, "stk onError: " + throwable.getMessage());
+
         sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
         sweetAlertDialog.setTitleText("Error");
         sweetAlertDialog.setContentText(throwable.getMessage());
     }
+
+    // Method to dynamically obtain the M-Pesa code from the STKPushResponse
+    private String getMpesaCode(STKPushResponse stkPushResponse) {
+        // Check if the response contains the CheckoutRequestID or any other unique identifier
+        if (stkPushResponse != null && stkPushResponse.getCheckoutRequestID() != null) {
+            return stkPushResponse.getCheckoutRequestID();
+        } else {
+            // Handle the case when the unique identifier is not available
+            return "unknownMpesaCode";
+        }
+    }
+
+
+    // Method to store transaction status in Firebase Database
+    private void storeTransactionStatus(String status, String message, STKPushResponse stkPushResponse,String amount,String phone_number) {
+        String user = getUserId(); // Dynamically obtain the user ID
+
+        if (user == null || user.isEmpty()) {
+            // Handle the case when the user ID is not available
+            Log.e(TAG, "User ID not available");
+            return;
+        }
+        String mpesaCode = getMpesaCode(stkPushResponse); // Dynamically obtain the M-Pesa code
+
+        // Build a unique key for the transaction status
+        String key = user + "_" + mpesaCode;
+
+        // Store the status, message, mpesacode, and sender name in Firebase Database
+        DatabaseReference transactionRef = transactionStatusRef.child(key);
+        transactionRef.child("status").setValue(status);
+        transactionRef.child("message").setValue(message);
+        transactionRef.child("mpesacode").setValue(mpesaCode);
+        transactionRef.child("amount").setValue(amount);
+        transactionRef.child("phone_number").setValue(phone_number);
+        // Optionally, you can add more data to store
+
+    }
+    // Method to dynamically obtain the user ID (replace this with your actual logic)
+    private String getUserId() {
+        // Example: Retrieve user ID from FirebaseAuth
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getUid();
+        } else {
+            // Handle the case when the user is not authenticated
+            return null;
+        }
+    }
+
+
+
 }

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIME_OUT=5000;
+    private static int SPLASH_SCREEN_TIME_OUT=3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class SplashScreen extends AppCompatActivity {
         //This method is used so that your splash activity
         //can cover the entire screen.
 
-        setContentView(R.layout.activity_splash_screen);
+       // setContentView(R.layout.activity_splash_screen);
         //this will bind your MainActivity.class file with activity_main.
 
         new Handler().postDelayed(new Runnable() {

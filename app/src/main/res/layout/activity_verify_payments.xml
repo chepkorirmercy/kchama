@@ -23,28 +23,28 @@
         android:id="@+id/code"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:text="Mpesa Code:"/>
+        android:hint="Mpesa Code:"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/amount"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:text="Amount Paid:"/>
+        android:hint="Amount Paid:"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/purpose"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:text="Purpose:"/>
+        android:hint="Purpose:"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/name"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:text="Name:"/>
+        android:hint="Name:"/>
 
     <Button
         android:layout_width="wrap_content"

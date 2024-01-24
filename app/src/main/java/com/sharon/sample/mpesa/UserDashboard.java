@@ -16,20 +16,22 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class UserDashboard extends AppCompatActivity {
 
-    private CardView pay, prog, meriGo;
+    private CardView paymentDetails, prog, meriGo, makePayments;
     private CardView select, logout;
 
     @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
-        pay = findViewById(R.id.pay);
+        paymentDetails = findViewById(R.id.pay);
         select = findViewById(R.id.select);
         prog = findViewById(R.id.prog);
         logout = findViewById(R.id.logout);
         meriGo = findViewById(R.id.M);
-        pay.setOnClickListener(View -> {
+        makePayments =findViewById(R.id.payments);
+        paymentDetails.setOnClickListener(View -> {
             Intent intent = new Intent(UserDashboard.this, PaymentDetails.class);
             startActivity(intent);
 
@@ -67,6 +69,10 @@ public class UserDashboard extends AppCompatActivity {
 
         meriGo.setOnClickListener(view -> {
             Intent intent = new Intent(UserDashboard.this, MeriGo.class);
+            startActivity(intent);
+        });
+       makePayments.setOnClickListener(view -> {
+            Intent intent = new Intent(UserDashboard.this,MpesaActivity.class);
             startActivity(intent);
         });
 
