@@ -1,12 +1,11 @@
 package com.sharon.sample.mpesa;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -20,7 +19,7 @@ public class Dashboard extends AppCompatActivity {
         a=findViewById(R.id.as);
         u=findViewById(R.id.u);
         a.setOnClickListener(View->{
-            Intent intent = new Intent(Dashboard.this, AdminLogin.class);
+            Intent intent = new Intent(Dashboard.this, VerifyPayments.class);
             startActivity(intent);
             finish();
         });

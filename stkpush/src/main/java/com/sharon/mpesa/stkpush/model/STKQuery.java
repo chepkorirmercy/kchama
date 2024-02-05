@@ -9,25 +9,54 @@ import com.google.gson.annotations.SerializedName;
 
 public class STKQuery {
 
-    @SerializedName("BusinessShortCode")
+    @SerializedName("CommandID")
     @Expose
-    private String businessShortCode;
+    private String commandId = "TransactionStatusQuery";
+    @SerializedName("PartyA")
+    @Expose
+    private String partyA;
     @SerializedName("Password")
     @Expose
     private String password;
     @SerializedName("Timestamp")
     @Expose
     private String timestamp;
-    @SerializedName("CheckoutRequestID")
+    @SerializedName("ResultURL")
     @Expose
-    private String checkoutRequestID;
+    private String resultUrl = "https://example.com";
+    @SerializedName("QueueTimeOutURL")
+    @Expose
+    private String queueTimeoutUrl = "https://example.com";
+    @SerializedName("OriginatorConversationID")
+    @Expose
+    private String originatorConversationId;
+    @SerializedName("TransactionID")
+    @Expose
+    private String transactionId;
+    @SerializedName("IdentifierType")
+    @Expose
+    private String identifierType = "4";
+    @SerializedName("Initiator")
+    @Expose
+    private String initiator = "testapiuser";
+    @SerializedName("Remarks")
+    @Expose
+    private String remarks = "Ok";
+    @SerializedName("Occasion")
+    @Expose
+    private String occasion = "Ok";
 
-    public String getBusinessShortCode() {
-        return businessShortCode;
+
+    public String getPartyA() {
+        return partyA;
     }
 
-    public void setBusinessShortCode(String businessShortCode) {
-        this.businessShortCode = businessShortCode;
+    public void setPartyA(String partyA) {
+        this.partyA = partyA;
+    }
+
+    public void setTransactionId(String transactionId){
+        this.transactionId = transactionId;
     }
 
     public String getPassword() {
@@ -46,12 +75,12 @@ public class STKQuery {
         this.timestamp = timestamp;
     }
 
-    public String getCheckoutRequestID() {
-        return checkoutRequestID;
+    public String getOriginatorConversationId() {
+        return originatorConversationId;
     }
 
-    public void setCheckoutRequestID(String checkoutRequestID) {
-        this.checkoutRequestID = checkoutRequestID;
+    public void setOriginatorConversationId(String originatorConversationId) {
+        this.originatorConversationId = originatorConversationId;
     }
 
 }
