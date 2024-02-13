@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -20,14 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class WaitingListFragment extends Fragment {
@@ -35,11 +37,12 @@ public class WaitingListFragment extends Fragment {
     MyAdapter myAdapter;
     ArrayList<User> users;
     FirebaseDatabase database;
-    DatabaseReference ref, usersRef, awardedUsersRef;
+    DatabaseReference ref, usersRef, awardedUsersRef, cyclesRef;
     ImageView spinImage;
     Animation spinAnimation;
     ProgressDialog loader;
     AlertDialog.Builder builder;
+    String spinDateTxt;
 
     // required default constructor
     public WaitingListFragment() {
@@ -72,6 +75,7 @@ public class WaitingListFragment extends Fragment {
         ref = database.getReference();
         usersRef = database.getReference("user");
         awardedUsersRef = database.getReference("users/awarded");
+        cyclesRef = database.getReference( "cycles");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -116,6 +120,7 @@ public class WaitingListFragment extends Fragment {
             }
         });
 
+
         // set spin animation
         spinAnimation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.spin);
 
@@ -138,12 +143,61 @@ public class WaitingListFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "All members have been awarded.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            spinImage.startAnimation(spinAnimation);
+            
+            // check if user is allowed to spin
+            checkIfCanSpin(canSpin -> {
+                if(canSpin) {
+                    spinImage.startAnimation(spinAnimation);
+                } else {
+                    Toast.makeText(getActivity(), "You cannot spin now: Spin time: "+spinDateTxt, Toast.LENGTH_LONG).show();
+                }
+            });
             /**
              * NOTE: Selecting a winner will be invoked once the spin animation finishes
              * in the onAnimationEnd() method
              */
+        });
+    }
+
+    // check if award cycle has started
+    private void checkIfCanSpin(CanSpinListener listener){
+        loader.show();
+        cyclesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                spinDateTxt = snapshot.getValue(String.class);
+                SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy HH:mm");
+                try {
+                    Date spinTime = formatter.parse(spinDateTxt);
+                    Calendar calendar = Calendar.getInstance();
+
+                    Calendar endTime = Calendar.getInstance();
+                    endTime.setTime(spinTime);
+                    endTime.add(Calendar.MINUTE, 30);
+
+                    // Get the current time
+                    Date currentTime = calendar.getTime();
+
+                    // Check if the current time is within the duration
+                    if (currentTime.after(spinTime) && currentTime.before(endTime.getTime())) {
+                        listener.canSpin(true);
+                    } else {
+                        listener.canSpin(false);
+                    }
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    loader.dismiss();
+                }
+
+                // covert t
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // failed to get spin date from database
+            }
         });
     }
 
@@ -190,4 +244,7 @@ public class WaitingListFragment extends Fragment {
                 });
     }
 
+    public interface CanSpinListener{
+        void canSpin(boolean canSpin);
+    }
 }

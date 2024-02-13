@@ -166,8 +166,8 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
 
     // Method to store transaction status in Firebase Database
-    private void storeTransactionStatus(String status, String message, STKPushResponse stkPushResponse,String amount,String phone_number,String sender_Name) {
-        Log.d(TAG, "Inside storeTransactionStatus method");
+    private void storeTransactionStatus(String status, String message, STKPushResponse stkPushResponse, String amount, String phone_number, String sender_Name) {
+        Log.d(TAG, "Storing transaction status...");
 
         String user = getUserId(); // Dynamically obtain the user ID
 
@@ -181,10 +181,15 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         // Build a unique key for the transaction status
         String key = user;
 
+        Log.d(TAG, "User ID: " + user);
+        Log.d(TAG, "Transaction Key: " + key);
+
         // Dynamically obtain the sender's name from the database based on the user ID
         getSenderNameFromDatabase(new SenderNameCallback() {
             @Override
             public void onSenderNameReceived(String senderName) {
+                Log.d(TAG, "Sender Name: " + senderName);
+
                 // Store the status, message, mpesacode, and sender name in Firebase Database
                 DatabaseReference transactionRef = transactionStatusRef.child(key);
                 transactionRef.child("status").setValue(status);
@@ -194,6 +199,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
                 transactionRef.child("phone_number").setValue(phone_number);
                 transactionRef.child("sender_name").setValue(sender_Name);
 
+                Log.d(TAG, "Transaction status stored successfully.");
                 // Store the sender's name in the database
                 setSenderNameInDatabase(senderName);
             }
@@ -206,6 +212,8 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         });
 
     }
+
+
     private interface SenderNameCallback {
         void onSenderNameReceived(String senderName);
         void onError(String error);

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/p"
-    tools:context=".UserPayments">
+    tools:context=".MeriGoControl">
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Payments"
+        android:text="Merigo Control"
         android:textSize="30sp"
         android:textColor="#fff"
         android:textStyle="bold"
@@ -36,22 +36,34 @@
         android:datePickerMode="spinner"
         android:layout_centerHorizontal="true"/>
 
-    <TimePicker
-        android:id="@+id/timePicker"
+    <Button
+        android:id="@+id/btnSelectTime"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="197dp"
-        android:layout_marginTop="40dp"
-       android:layout_below="@+id/datePicker"
-        android:layout_centerHorizontal="true"
-        android:timePickerMode="spinner" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/datePicker"
+        android:layout_centerInParent="true"
+        android:text="Select Time" />
+
+    <TextView
+        android:id="@+id/tvSelectedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSelectTime"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Selected time:"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/spinDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
         android:textSize="20sp"
         android:text="Next Spin Date: "
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@+id/tvSelectedTime"
         android:textColor="#fff"
         android:layout_marginStart="10dp"
         />

@@ -19,7 +19,7 @@ public class Dashboard extends AppCompatActivity {
         a=findViewById(R.id.as);
         u=findViewById(R.id.u);
         a.setOnClickListener(View->{
-            Intent intent = new Intent(Dashboard.this, VerifyPayments.class);
+            Intent intent = new Intent(Dashboard.this, AdminDashboard.class);
             startActivity(intent);
             finish();
         });
