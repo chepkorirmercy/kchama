@@ -29,11 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Start with 254710xxxxxx"
+        android:hint="0712345678"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#070707"
-        android:textAlignment="center"
         android:inputType="phone" />
 
     <EditText
@@ -41,7 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textAlignment="center"
         android:hint="Amount"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -54,7 +52,7 @@
         android:layout_marginTop="10dp"
         android:background="#40FF0C"
         android:onClick="startMpesa"
-        android:text="Make Payments"
+        android:text="Pay"
         android:textAllCaps="false"
         android:textStyle="bold"
         android:textSize="24sp"/>

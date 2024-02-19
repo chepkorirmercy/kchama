@@ -110,10 +110,10 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
                 Log.e(TAG, "onResponse: " + stkPushResponse.toJson(stkPushResponse));
 
                 // Dynamically obtain the M-Pesa code
-                String mpesaCode = getMpesaCode(stkPushResponse);
+                String checkoutRequestId = getMpesaCode(stkPushResponse);
 
                 // Log the M-Pesa code before storing it
-                Log.d(TAG, "M-Pesa Code before storing: " + mpesaCode);
+                Log.d(TAG, "M-Pesa Code before storing: " + checkoutRequestId);
 
                 String message = "Please enter your pin to complete transaction";
 
@@ -124,7 +124,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
 
                 // Store the transaction status in Firebase Database
-                storeTransactionStatus("success", message, stkPushResponse, amount, phone_number, mpesaCode);
+                storeTransactionStatus(message, stkPushResponse, amount, phone_number, checkoutRequestId);
 
 
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
@@ -166,7 +166,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
 
     // Method to store transaction status in Firebase Database
-    private void storeTransactionStatus(String status, String message, STKPushResponse stkPushResponse, String amount, String phone_number, String sender_Name) {
+    private void storeTransactionStatus(String message, STKPushResponse stkPushResponse, String amount, String phoneNumber, String senderName) {
         Log.d(TAG, "Storing transaction status...");
 
         String user = getUserId(); // Dynamically obtain the user ID
@@ -179,7 +179,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         String mpesaCode = getMpesaCode(stkPushResponse); // Dynamically obtain the M-Pesa code
 
         // Build a unique key for the transaction status
-        String key = user;
+        String key = transactionStatusRef.push().getKey();
 
         Log.d(TAG, "User ID: " + user);
         Log.d(TAG, "Transaction Key: " + key);
@@ -190,18 +190,16 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
             public void onSenderNameReceived(String senderName) {
                 Log.d(TAG, "Sender Name: " + senderName);
 
-                // Store the status, message, mpesacode, and sender name in Firebase Database
+                // Store the status, message, MPesaCode, and sender name in Firebase Database
                 DatabaseReference transactionRef = transactionStatusRef.child(key);
-                transactionRef.child("status").setValue(status);
-                transactionRef.child("message").setValue(message);
-                transactionRef.child("mpesacode").setValue(mpesaCode);
+                transactionRef.child("checkout_request_id").setValue(mpesaCode);
                 transactionRef.child("amount").setValue(amount);
-                transactionRef.child("phone_number").setValue(phone_number);
-                transactionRef.child("sender_name").setValue(sender_Name);
+                transactionRef.child("userId").setValue(getUserId());
+                transactionRef.child("phone_number").setValue(phoneNumber);
+                transactionRef.child("sender_name").setValue(senderName);
+                transactionRef.child("paid").setValue(false);
 
                 Log.d(TAG, "Transaction status stored successfully.");
-                // Store the sender's name in the database
-                setSenderNameInDatabase(senderName);
             }
 
             @Override
@@ -240,12 +238,6 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
                 callback.onError("Database error: " + databaseError.getMessage());
             }
         });
-    }
-
-    private void setSenderNameInDatabase(String senderName) {
-        DatabaseReference userRef = database.getReference("user").child(getUserId());
-        userRef.child("name").setValue(senderName);
-
     }
 
     // Method to dynamically obtain the user ID (replace this with your actual logic)

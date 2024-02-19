@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="#000"
                     app:hintTextAppearance="@color/black"
+                    android:layout_marginTop="10dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -72,13 +73,14 @@
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="#000"
                     app:hintTextAppearance="@color/black"
+                    android:layout_marginTop="10dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registerPhoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="enter_phone_number"
+                        android:hint="Enter Phone Number"
                         android:inputType="number"
                         android:drawablePadding="10dp"
                         android:textColor="#000"
@@ -87,33 +89,13 @@
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxStrokeColor="@color/black"
-                    app:hintTextAppearance="@color/black"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/registerUserID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="UserID"
-                        android:inputType="number"
-                        android:drawablePadding="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textColorHint="#000"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="#000"
                     app:hintTextAppearance="@color/black"
+                    android:layout_marginTop="10dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -135,6 +117,7 @@
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="#000"
                     app:hintTextAppearance="@color/black"
+                    android:layout_marginTop="10dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -156,15 +139,15 @@
 
                 <Button
                     android:id="@+id/userRegisterButton"
-                    android:text="sign_up_now"
+                    android:text="Signup"
                     android:textAllCaps="false"
                     android:layout_marginTop="20dp"
+                    android:padding="15dp"
                     android:layout_gravity="center"
                     android:textColor="#fff"
                     android:textSize="20sp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
             </LinearLayout>
 
         </LinearLayout>

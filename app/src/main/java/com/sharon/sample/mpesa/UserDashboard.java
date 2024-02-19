@@ -1,9 +1,5 @@
 package com.sharon.sample.mpesa;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,12 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserDashboard extends AppCompatActivity {
 
     private CardView paymentDetails, prog, meriGo, makePayments;
-    private CardView select, logout;
+    private CardView viewReports, logout;
 
     @SuppressLint("MissingInflatedId")
 
@@ -26,7 +26,7 @@ public class UserDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
         paymentDetails = findViewById(R.id.pay);
-        select = findViewById(R.id.select);
+        viewReports = findViewById(R.id.Reports);
         prog = findViewById(R.id.prog);
         logout = findViewById(R.id.logout);
         meriGo = findViewById(R.id.M);
@@ -63,6 +63,7 @@ public class UserDashboard extends AppCompatActivity {
         });
         prog.setOnClickListener(View -> {
             Intent intent = new Intent(UserDashboard.this, ProjectsActivity.class);
+            intent.putExtra("isAdmin", false);
             startActivity(intent);
 
         });
@@ -76,8 +77,8 @@ public class UserDashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-       select.setOnClickListener(View -> {
-           Intent intent = new Intent(UserDashboard.this, SelectWinner.class);
+       viewReports.setOnClickListener(View -> {
+           Intent intent = new Intent(UserDashboard.this, Reports.class);
            startActivity(intent);
        });
 

@@ -30,6 +30,8 @@ public class STKQuery {
     @SerializedName("OriginatorConversationID")
     @Expose
     private String originatorConversationId;
+
+
     @SerializedName("TransactionID")
     @Expose
     private String transactionId;
@@ -45,7 +47,6 @@ public class STKQuery {
     @SerializedName("Occasion")
     @Expose
     private String occasion = "Ok";
-
 
     public String getPartyA() {
         return partyA;

@@ -1,15 +1,16 @@
 package com.sharon.sample.mpesa;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -20,6 +21,7 @@ public class ProjectsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference dbRef;
+    boolean isAdmin = false;
 
     FirebaseRecyclerOptions<TaskItem> options;
     FirebaseRecyclerAdapter<TaskItem,ViewHolder> adapter;
@@ -28,6 +30,11 @@ public class ProjectsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
+
+        Intent intent = getIntent();
+        isAdmin = intent.getBooleanExtra("isAdmin", false);
+
+        Toast.makeText(this, "Viewing projects as "+(isAdmin ? "Admin" : "User"), Toast.LENGTH_SHORT).show();
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -39,11 +46,25 @@ public class ProjectsActivity extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<TaskItem, ViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull TaskItem model) {
-                holder.Description.append(model.getDescription());
-                holder.Name.append(model.getName());
-                holder.Time.append(model.getTime());
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull TaskItem item) {
+                holder.description.setText(item.getDescription());
+                holder.name.setText(item.getName());
+                holder.date.setText(item.getTime());
+                //set visibility of delete button based on admin status
+                holder.btndelete.setVisibility(isAdmin ? View.VISIBLE:View.GONE);
+                holder.btndelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                        DatabaseReference dbRef= database.getReference("project");
 
+                        dbRef.child(item.getId()).removeValue().addOnSuccessListener(success -> {
+                            Toast.makeText(ProjectsActivity.this, "Successfully deleted the project", Toast.LENGTH_SHORT).show();
+                        }).addOnFailureListener(error -> {
+                            Toast.makeText(ProjectsActivity.this, "Unable to delete the project item", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
             }
 
             @NonNull

@@ -1,14 +1,14 @@
 package com.sharon.sample.mpesa;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,10 +38,10 @@ public class AdminDashboard extends AppCompatActivity {
             Intent intent = new Intent(AdminDashboard.this,ViewInfo.class);
             startActivity(intent);
         });
-//        Send.setOnClickListener(View->{
-//            Intent intent = new Intent(AdminDashboard.this, SendSMS.class);
-//            startActivity(intent);
-//        });
+      Send.setOnClickListener(View->{
+           Intent intent = new Intent(AdminDashboard.this, SendSMS.class);
+           startActivity(intent);
+        });
 
         verify.setOnClickListener(View->{
             Intent intent = new Intent(AdminDashboard.this,VerifyPayments.class);
@@ -66,7 +66,7 @@ public class AdminDashboard extends AppCompatActivity {
                 builder.setCancelable(false);
                 builder.setTitle("Exit");
                 builder.setMessage("are you sure you want to logout?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Yes", new     DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();

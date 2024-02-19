@@ -1,17 +1,16 @@
 package com.sharon.sample.mpesa;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class SendSMS extends AppCompatActivity {
     EditText etPhone,etMessage;
@@ -22,9 +21,6 @@ public class SendSMS extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_sms);
         etPhone = findViewById(R.id.et_phone);
-        Intent intent = getIntent();
-       String phone = intent.getStringExtra("phone");
-        etPhone.setText(String.valueOf(phone));
         etMessage = findViewById(R.id.et_message);
 
         btSend = findViewById(R.id.bt_send);
@@ -53,6 +49,12 @@ public class SendSMS extends AppCompatActivity {
         //check condition
 
         if(!sPhone.equals("") && !sMessage.equals("")) {
+            //check if both phone number and message are empty
+            if (sPhone.isEmpty() && !sMessage.isEmpty()) {
+                etPhone.setError("Enter Valid Phone Number");
+                etPhone.requestFocus();
+                return;
+            }
             //when both edit text value not equal to blank
             SmsManager smsManager = SmsManager.getDefault();
             //send text message
@@ -60,20 +62,9 @@ public class SendSMS extends AppCompatActivity {
             //Display toast
             Toast.makeText(getApplicationContext()
                     , "SMS sent Successfully", Toast.LENGTH_LONG).show();
-
-
-        }
-        if(sPhone.length()<10) {
-            etPhone.setError("Enter Valid Phone Number");
-            etPhone.requestFocus();
-            return;
-        }
-        else {
-            //when edit text is blank
-            //Display toast
+        }else {
             Toast.makeText(getApplicationContext()
                     , "Enter Value First", Toast.LENGTH_LONG).show();
-
         }
 
     }

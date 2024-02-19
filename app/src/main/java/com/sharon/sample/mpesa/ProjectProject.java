@@ -1,20 +1,13 @@
 package com.sharon.sample.mpesa;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toolbar;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,8 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProjectProject extends AppCompatActivity {
 
@@ -40,6 +31,11 @@ public class ProjectProject extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProjectProject.this));
 
+        // Check if the current user is an admin or not
+        // For simplicity, let's assume isAdmin is determined elsewhere in your code
+        boolean isAdmin = checkIfUserIsAdmin();
+
+
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -52,7 +48,10 @@ public class ProjectProject extends AppCompatActivity {
                     //TaskItem taskItem=new TaskItem(getName);
                     taskItemslist.add(taskItem);
                 }
-                recyclerView.setAdapter(new MyAdapter2(taskItemslist,ProjectProject.this));
+                //boolean isAdminPage = false;
+                recyclerView.setAdapter(new MyAdapter2(taskItemslist,
+                        ProjectProject.this,
+                        isAdmin));
             }
 
             @Override
@@ -61,5 +60,9 @@ public class ProjectProject extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean checkIfUserIsAdmin() {
+        return true;
     }
 }
