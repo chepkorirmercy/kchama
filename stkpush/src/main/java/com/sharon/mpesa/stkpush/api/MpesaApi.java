@@ -27,7 +27,7 @@ public interface MpesaApi {
     Observable<STKPushResponse> stkPush(@Header("Authorization") String authorization, @Body STKPush stkPush);
 
     @Headers("content-type: application/json")
-    @POST("mpesa/transactionstatus/v1/query")
+    @POST("mpesa/stkpushquery/v1/query")
     Observable<STKPushResponse> stkPushQuery(@Header("Authorization") String authorization, @Body STKQuery stkQuery);
 
 }

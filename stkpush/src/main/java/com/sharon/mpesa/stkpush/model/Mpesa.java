@@ -5,6 +5,7 @@ import android.util.Base64;
 import com.sharon.mpesa.stkpush.Mode;
 import com.sharon.mpesa.stkpush.api.RetroClient;
 import com.sharon.mpesa.stkpush.api.response.STKPushResponse;
+import com.sharon.mpesa.stkpush.interfaces.PaymentVerificationListener;
 import com.sharon.mpesa.stkpush.interfaces.STKListener;
 import com.sharon.mpesa.stkpush.interfaces.STKQueryListener;
 import com.sharon.mpesa.stkpush.interfaces.TokenListener;
@@ -179,6 +180,36 @@ public class Mpesa {
                     @Override
                     public void onNext(STKPushResponse stkPushResponse) {
                         stkQueryListener.onResponse(stkPushResponse);
+                    }
+                }));
+    }
+
+    public void checkPaymentStatus(Token token, STKQuery stkQuery, String paymentId, final PaymentVerificationListener paymentVerificationListener){
+        if (token == null) {
+            throw new RuntimeException("Token cannot be null");
+        }
+        if (stkQuery == null) {
+            throw new RuntimeException("STkQuery cannot be null");
+        }
+
+        mCompositeSubscription.add(RetroClient.getApiService(mode).stkPushQuery(getAuthorization(token.getAccessToken()), stkQuery)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<STKPushResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentVerificationListener.onError(throwable);
+                    }
+
+                    @Override
+                    public void onNext(STKPushResponse stkPushResponse) {
+                        boolean isPaid = stkPushResponse.getResultCode() == 0;
+                        paymentVerificationListener.onPaymentVerified(paymentId, isPaid);
                     }
                 }));
     }

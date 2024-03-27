@@ -15,6 +15,12 @@ public class STKQuery {
     @SerializedName("PartyA")
     @Expose
     private String partyA;
+    @SerializedName("BusinessShortCode")
+    @Expose
+    private String businessShortCode;
+    @SerializedName("CheckoutRequestID")
+    @Expose
+    private String checkoutRequestId;
     @SerializedName("Password")
     @Expose
     private String password;
@@ -54,6 +60,21 @@ public class STKQuery {
 
     public void setPartyA(String partyA) {
         this.partyA = partyA;
+    }
+
+    public String getBusinessShortCode() {
+        return businessShortCode;
+    }
+
+    public void setBusinessShortCode(String businessShortCode) {
+        this.businessShortCode = businessShortCode;
+    }
+
+    public String getCheckoutRequestId(){
+        return checkoutRequestId;
+    }
+    public void setCheckoutRequestId(String checkoutRequestId){
+        this.checkoutRequestId = checkoutRequestId;
     }
 
     public void setTransactionId(String transactionId){

@@ -56,7 +56,4 @@
         android:textAllCaps="false"
         android:textStyle="bold"
         android:textSize="24sp"/>
-
-
-
-</LinearLayout>
+    </LinearLayout>
