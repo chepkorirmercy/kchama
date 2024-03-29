@@ -26,7 +26,7 @@ public class PaymentDetails extends AppCompatActivity {
         setContentView(R.layout.activity_payment_details);
         //initialize Firebase
         FirebaseDatabase database=FirebaseDatabase.getInstance();
-        databaseReference=database.getReference("payments");
+        databaseReference=database.getReference("purpose");
         //initialize UI components
         code=findViewById(R.id.code);
         amount=findViewById(R.id.amount);
