@@ -7,6 +7,8 @@ public class PaymentItem {
     private String senderName;
     private String senderId;
     private String amount;
+    private String purpose = "merigo";
+
     private boolean paid = false;
     private boolean checked = false;
 
@@ -56,6 +58,14 @@ public class PaymentItem {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
     public boolean isPaid() {
