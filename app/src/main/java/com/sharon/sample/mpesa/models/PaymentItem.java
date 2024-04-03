@@ -9,6 +9,7 @@ public class PaymentItem {
     private String amount;
     private String purpose = "merigo";
 
+
     private boolean paid = false;
     private boolean checked = false;
 

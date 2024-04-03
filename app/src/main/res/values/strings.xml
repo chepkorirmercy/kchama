@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">KChama</string>
 
+    <string-array name="purpose_options">
+        <item>Merigo</item>
+        <item>Project</item>
+    </string-array>
+
+
     <array name="department_array">
         <item>choose</item>
         <item>Human Resource</item>

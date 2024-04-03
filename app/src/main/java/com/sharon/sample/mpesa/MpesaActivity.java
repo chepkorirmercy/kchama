@@ -3,7 +3,9 @@ package com.sharon.sample.mpesa;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,9 @@ import com.sharon.mpesa.stkpush.model.Transaction;
 import com.sharon.sample.mpesa.models.PaymentItem;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -35,12 +40,20 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
     public static final String TAG = MpesaActivity.class.getSimpleName();
 
     private EditText phoneET, amountET;
+    private SweetAlertDialog sweetAlertDialog;
     private Mpesa mpesa;
-    SweetAlertDialog  sweetAlertDialog;
+
+    private String spinDateStr;
+    private Date dateNow, spinDate;
+
     private String phone_number;
     private String amount;
     private FirebaseDatabase database;
     private DatabaseReference paymentsRef;
+    DatabaseReference cyclesRef;
+    boolean isPenalized  = false;
+    private String selectedPurpose = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +62,65 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         phoneET = findViewById(R.id.phoneET);
         amountET = findViewById(R.id.amountET);
 
+        Spinner spinnerPurpose = findViewById(R.id.spinner_purpose);
+        //String selectedPurpose = spinnerPurpose.getSelectedItem().toString();
+        spinnerPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Update selectedPurpose when an item is selected
+               selectedPurpose = parent.getItemAtPosition(position).toString();
+            }
+
+
+            @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    });
+
+
+    database = FirebaseDatabase.getInstance();
+        cyclesRef = database.getReference("/cycles");
+
         mpesa = new Mpesa(Config.CONSUMER_KEY, Config.CONSUMER_SECRET, Mode.SANDBOX);
 
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("Connecting to Safaricom");
+        sweetAlertDialog.setContentText("Please wait...");
+        sweetAlertDialog.setCancelable(false);
+
         // Initialize Firebase Database
         database = FirebaseDatabase.getInstance();
         paymentsRef = database.getReference("payments");
+
+        // get spin date from database
+        cyclesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    spinDateStr = snapshot.getValue().toString();
+                    SimpleDateFormat formatter = new SimpleDateFormat();
+                    try {
+                        spinDate = formatter.parse(spinDateStr);
+                        dateNow = new Date();
+
+                        // check if user will be fined or not
+                        if(!dateNow.before(spinDate)){
+                            Toast.makeText(MpesaActivity.this, "Note that due to late payment, you will attract a penalty. You were supposed to have paid before "+spinDateStr, Toast.LENGTH_LONG).show();
+                            isPenalized = true;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void startMpesa(View view) {
@@ -71,6 +137,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
             Toast.makeText(MpesaActivity.this, "Amount is required", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         try {
             sweetAlertDialog.setTitleText("Connecting to Safaricom")
@@ -99,6 +166,8 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
         stkPush.setCallBackURL(Config.CALLBACKURL);
         stkPush.setAccountReference("KChama");
         stkPush.setTransactionDesc("some description");
+
+
         mpesa.startStkPush(token, stkPush, new STKListener() {
             @Override
 
@@ -106,7 +175,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
                 Log.e(TAG, "onResponse: " + stkPushResponse.toJson(stkPushResponse));
 
                 // Store the transaction status in Firebase Database
-                storeTransactionStatus(stkPushResponse, amount, phone_number);
+                storeTransactionStatus(stkPushResponse, amount, phone_number,selectedPurpose);
 
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 sweetAlertDialog.setTitleText("Transaction started");
@@ -135,7 +204,7 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
 
 
     // Method to store transaction status in Firebase Database
-    private void storeTransactionStatus(STKPushResponse stkPushResponse, String amount, String phoneNumber) {
+    private void storeTransactionStatus(STKPushResponse stkPushResponse, String amount, String phoneNumber,String purpose) {
         // Dynamically obtain the sender's name from the database based on the user ID
         getSenderNameFromDatabase(senderName -> {
             String paymentId = paymentsRef.push().getKey().toString();
@@ -147,6 +216,8 @@ public class MpesaActivity extends AppCompatActivity implements TokenListener {
             paymentItem.setSenderId(getUserId());
             paymentItem.setCheckoutRequestId(stkPushResponse.getCheckoutRequestID());
             paymentItem.setSenderName(senderName);
+            paymentItem.setPurpose(purpose);
+
 
              paymentsRef.child(paymentId).setValue(paymentItem).addOnSuccessListener(unused ->{
                  Log.d("SaveTransactions", "Payment saved successfully");

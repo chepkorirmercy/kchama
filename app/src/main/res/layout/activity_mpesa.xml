@@ -8,6 +8,8 @@
     android:padding="10dp"
     tools:context="com.sharon.sample.mpesa.MpesaActivity">
 
+
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
@@ -45,6 +47,13 @@
         android:textStyle="bold"
         android:textColor="#070707"
         android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinner_purpose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/purpose_options" />
+
 
     <Button
         android:layout_width="match_parent"
