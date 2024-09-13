@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "793583370986",
+    "firebase_url": "https://kchama-e78b6-default-rtdb.firebaseio.com",
+    "project_id": "kchama-e78b6",
+    "storage_bucket": "kchama-e78b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793583370986:android:e156210df8aa300a440d93",
+        "android_client_info": {
+          "package_name": "com.sharon.sample.mpesa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0k00yjV53RmW5vfySSkH6BpZysiJ6DwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

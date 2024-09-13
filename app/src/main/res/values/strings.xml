@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">KChama</string>
+
+    <string-array name="purpose_options">
+        <item>Merigo</item>
+        <item>Project</item>
+    </string-array>
+
+
+    <array name="department_array">
+        <item>choose</item>
+        <item>Human Resource</item>
+        <item>Informatics</item>
+        <item>Business STudy</item>
+        <item>Health</item>
+    </array>
+
+
+    <array name="semister">
+        <item>semister 1</item>
+        <item>semister 2</item>
+        <item>semister 3</item>
+        <item>semister 4</item>
+        <item>semister 5</item>
+        <item>semister 6</item>
+
+    </array>
+</resources>

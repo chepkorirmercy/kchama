@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/p"
+    tools:context=".MeriGoControl">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Merigo Control"
+        android:textSize="30sp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Date for the next Spin"
+        android:textSize="18sp"
+        android:textColor="#fff"
+        android:layout_below="@+id/tvTitle"
+        android:gravity="center_horizontal"
+        />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="197dp"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="21dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btnSelectTime"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/datePicker"
+        android:layout_centerInParent="true"
+        android:text="Select Time" />
+
+    <TextView
+        android:id="@+id/tvSelectedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSelectTime"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Selected time:"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/spinDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:textSize="20sp"
+        android:text="Next Spin Date: "
+        android:layout_below="@+id/tvSelectedTime"
+        android:textColor="#fff"
+        android:layout_marginStart="10dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/spinDate"
+        android:layout_marginTop="10dp"
+        >
+
+        <Button
+            android:id="@+id/restartCycle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restart Award Cycle"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:layout_marginStart="10dp"
+            />
+
+        <Button
+            android:id="@+id/setSpinDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:padding="15dp"
+            android:text="Set Spin Date"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+</RelativeLayout>
