@@ -1,6 +1,3 @@
-<<<<<<< HEAD
 # KChama 
-This is KChama
-=======
-# kchama
->>>>>>> 63430e1ee12d57c4b66b00ba8f596cf053bb2e7c
+This is KChama. A mobile application that helps automate the collection and disbursment of funds in Chamas.
+It uses a truly random algorithm to ensure that the election is free and fair
